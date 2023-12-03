@@ -48,15 +48,16 @@ namespace Unity.FPS.Game
         {
             if (GameIsEnding)
             {
-                float timeRatio = 1 - (m_TimeLoadEndGameScene - Time.time) / EndSceneLoadDelay;
-                EndGameFadeCanvasGroup.alpha = timeRatio;
-
-                AudioUtility.SetMasterVolume(1 - timeRatio);
+                //float timeRatio = 1 - (m_TimeLoadEndGameScene - Time.time) / EndSceneLoadDelay;
+                //EndGameFadeCanvasGroup.alpha = timeRatio;
+                //
+                //AudioUtility.SetMasterVolume(1 - timeRatio);
 
                 // See if it's time to load the end scene (after the delay)
                 if (Time.time >= m_TimeLoadEndGameScene)
                 {
-                    SceneManager.LoadScene(m_SceneToLoad);
+                    //SceneManager.LoadScene(m_SceneToLoad);
+                    Debug.Log("game ended");
                     GameIsEnding = false;
                 }
             }

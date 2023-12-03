@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+//using Mirror;
 
 namespace Unity.FPS.Game
 {
@@ -26,6 +27,7 @@ namespace Unity.FPS.Game
     }
 
     [RequireComponent(typeof(AudioSource))]
+    //public class WeaponController : NetworkBehaviour
     public class WeaponController : MonoBehaviour
     {
         [Header("Information")] [Tooltip("The name that will be displayed in the UI for this weapon")]
@@ -449,6 +451,7 @@ namespace Unity.FPS.Game
                 Vector3 shotDirection = GetShotDirectionWithinSpread(WeaponMuzzle);
                 ProjectileBase newProjectile = Instantiate(ProjectilePrefab, WeaponMuzzle.position,
                     Quaternion.LookRotation(shotDirection));
+                //NetworkServer.Spawn(newProjectile.gameObject);
                 newProjectile.Shoot(this);
             }
 

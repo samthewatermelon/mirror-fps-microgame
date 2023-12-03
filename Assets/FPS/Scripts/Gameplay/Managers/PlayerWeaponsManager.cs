@@ -2,11 +2,12 @@
 using Unity.FPS.Game;
 using UnityEngine;
 using UnityEngine.Events;
+using Mirror;
 
 namespace Unity.FPS.Gameplay
 {
     [RequireComponent(typeof(PlayerInputHandler))]
-    public class PlayerWeaponsManager : MonoBehaviour
+    public class PlayerWeaponsManager : NetworkBehaviour
     {
         public enum WeaponSwitchState
         {
@@ -80,6 +81,8 @@ namespace Unity.FPS.Gameplay
         public UnityAction<WeaponController, int> OnAddedWeapon;
         public UnityAction<WeaponController, int> OnRemovedWeapon;
 
+        public WeaponController activeWeapon; /// NEW
+
         WeaponController[] m_WeaponSlots = new WeaponController[9]; // 9 available weapon slots
         PlayerInputHandler m_InputHandler;
         PlayerCharacterController m_PlayerCharacterController;
@@ -122,7 +125,8 @@ namespace Unity.FPS.Gameplay
         void Update()
         {
             // shoot handling
-            WeaponController activeWeapon = GetActiveWeapon();
+            //WeaponController activeWeapon = GetActiveWeapon();
+            activeWeapon = GetActiveWeapon();
 
             if (activeWeapon != null && activeWeapon.IsReloading)
                 return;
@@ -138,18 +142,29 @@ namespace Unity.FPS.Gameplay
                 // handle aiming down sights
                 IsAiming = m_InputHandler.GetAimInputHeld();
 
-                // handle shooting
-                bool hasFired = activeWeapon.HandleShootInputs(
-                    m_InputHandler.GetFireInputDown(),
-                    m_InputHandler.GetFireInputHeld(),
-                    m_InputHandler.GetFireInputReleased());
-
-                // Handle accumulating recoil
-                if (hasFired)
+                if (isLocalPlayer)
                 {
-                    m_AccumulatedRecoil += Vector3.back * activeWeapon.RecoilForce;
-                    m_AccumulatedRecoil = Vector3.ClampMagnitude(m_AccumulatedRecoil, MaxRecoilDistance);
-                }
+
+                    // handle shooting
+                    //    bool hasFired = activeWeapon.HandleShootInputs (
+                    //        m_InputHandler.GetFireInputDown(),
+                    //        m_InputHandler.GetFireInputHeld(),
+                    //        m_InputHandler.GetFireInputReleased());
+
+                    bool down = m_InputHandler.GetFireInputDown();
+                    bool held = m_InputHandler.GetFireInputHeld();
+                    bool released = m_InputHandler.GetFireInputReleased();
+                    
+                    if (down || held || released)
+                        CmdFireOnServer(down,held,released);
+                }    
+                //    // Handle accumulating recoil
+                //    if (hasFired)
+                //    {
+                //        m_AccumulatedRecoil += Vector3.back * activeWeapon.RecoilForce;
+                //        m_AccumulatedRecoil = Vector3.ClampMagnitude(m_AccumulatedRecoil, MaxRecoilDistance);
+                //    }
+                //}
             }
 
             // weapon switch handling
@@ -189,6 +204,39 @@ namespace Unity.FPS.Gameplay
             }
         }
 
+        [Command]
+        public void CmdFireOnServer(bool firedown, bool fireheld, bool firereleased)
+        {
+            RpcFireOnClient(firedown, fireheld, firereleased);
+
+            //bool hasFired = activeWeapon.HandleShootInputs(
+            //    firedown,
+            //    fireheld,
+            //    firereleased);
+            //
+            //if (hasFired)
+            //{
+            //    m_AccumulatedRecoil += Vector3.back * activeWeapon.RecoilForce;
+            //    m_AccumulatedRecoil = Vector3.ClampMagnitude(m_AccumulatedRecoil, MaxRecoilDistance);
+            //}
+        }
+
+        [ClientRpc]
+        public void RpcFireOnClient(bool firedown, bool fireheld, bool firereleased)
+        {
+            //Debug.Log(firedown + "," + fireheld + "," + firereleased);
+            
+            bool hasFired = activeWeapon.HandleShootInputs(
+                firedown,
+                fireheld,
+                firereleased);
+            
+            if (hasFired)
+            {
+                m_AccumulatedRecoil += Vector3.back * activeWeapon.RecoilForce;
+                m_AccumulatedRecoil = Vector3.ClampMagnitude(m_AccumulatedRecoil, MaxRecoilDistance);
+            }
+        }
 
         // Update various animated features in LateUpdate because it needs to override the animated arm position
         void LateUpdate()

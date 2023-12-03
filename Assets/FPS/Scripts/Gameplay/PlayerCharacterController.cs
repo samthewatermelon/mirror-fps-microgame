@@ -104,6 +104,7 @@ namespace Unity.FPS.Gameplay
         public bool IsDead { get; private set; }
         public bool IsCrouching { get; private set; }
 
+        public GameObject youDied;
         public float RotationMultiplier
         {
             get
@@ -142,6 +143,8 @@ namespace Unity.FPS.Gameplay
 
         void Start()
         {
+            youDied.SetActive(false);
+
             // fetch components on the same gameObject
             m_Controller = GetComponent<CharacterController>();
             DebugUtility.HandleErrorIfNullGetComponent<CharacterController, PlayerCharacterController>(m_Controller,
@@ -219,6 +222,8 @@ namespace Unity.FPS.Gameplay
         void OnDie()
         {
             IsDead = true;
+
+            youDied.SetActive(true);
 
             // Tell the weapons manager to switch to a non-existing weapon in order to lower the weapon
             m_WeaponsManager.SwitchToWeaponIndex(-1, true);

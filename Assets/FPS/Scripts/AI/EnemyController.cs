@@ -3,11 +3,12 @@ using Unity.FPS.Game;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using Mirror;
 
 namespace Unity.FPS.AI
 {
     [RequireComponent(typeof(Health), typeof(Actor), typeof(NavMeshAgent))]
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : NetworkBehaviour
     {
         [System.Serializable]
         public struct RendererIndexData
@@ -358,6 +359,13 @@ namespace Unity.FPS.AI
         }
 
         void OnDie()
+        {
+            if (isServer)
+                RpcOnDie();
+        }
+
+        [ClientRpc]
+        void RpcOnDie()
         {
             // spawn a particle system when dying
             var vfx = Instantiate(DeathVfx, DeathVfxSpawnPoint.position, Quaternion.identity);

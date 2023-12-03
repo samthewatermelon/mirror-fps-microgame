@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using Mirror;
 
 namespace Unity.FPS.Game
 {
-    public class Health : MonoBehaviour
+    public class Health : NetworkBehaviour
     {
         [Tooltip("Maximum amount of health")] public float MaxHealth = 10f;
 
@@ -14,7 +15,8 @@ namespace Unity.FPS.Game
         public UnityAction<float> OnHealed;
         public UnityAction OnDie;
 
-        public float CurrentHealth { get; set; }
+        [SyncVar]
+        public float CurrentHealth; //{ get; set; }
         public bool Invincible { get; set; }
         public bool CanPickup() => CurrentHealth < MaxHealth;
 
