@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.SceneManagement;
 
 public class NetworkPlayer : NetworkBehaviour
 {
@@ -19,11 +20,17 @@ public class NetworkPlayer : NetworkBehaviour
             audioListener.enabled = false;
             hud.SetActive(false);
         }
-    }
+        if (SceneManager.GetActiveScene().name == "Lobby")
+        {
+            fpsCamera.targetDisplay = 2;
+            weaponCamera.enabled = false;
+            audioListener.enabled = false;
+            hud.SetActive(false);
+        }
+        else
+        {
+            GetComponent<Unity.FPS.Gameplay.PlayerInputHandler>().enabled = true;
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
