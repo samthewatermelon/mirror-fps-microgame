@@ -8,7 +8,6 @@ using Steamworks;
 
 public class CustomNetworkManager : NetworkManager
 {
-    //[SerializeField] private PlayerObjectController GamePlayerPrefab;
     public static CustomNetworkManager singleton { get; internal set; }
 
     public List<PlayerObjectController> GamePlayers;

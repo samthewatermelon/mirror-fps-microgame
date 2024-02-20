@@ -3,7 +3,7 @@ using Mirror;
 
 namespace Unity.FPS.Game
 {
-    public class Damageable : NetworkBehaviour
+    public class Damageable : MonoBehaviour
     {
         [Tooltip("Multiplier to apply to the received damage")]
         public float DamageMultiplier = 1f;
@@ -25,7 +25,7 @@ namespace Unity.FPS.Game
 
         public void InflictDamage(float damage, bool isExplosionDamage, GameObject damageSource)
         {
-            if (Health && isServer) /// NEW
+            if (Health)// && isServer) /// NEW
             {
                 var totalDamage = damage;
 

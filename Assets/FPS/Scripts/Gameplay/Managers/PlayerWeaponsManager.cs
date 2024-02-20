@@ -98,6 +98,9 @@ namespace Unity.FPS.Gameplay
 
         void Start()
         {
+            if (!NetworkClient.ready)
+                NetworkClient.Ready();
+            
             ActiveWeaponIndex = -1;
             m_WeaponSwitchState = WeaponSwitchState.Down;
 
@@ -145,26 +148,13 @@ namespace Unity.FPS.Gameplay
                 if (isLocalPlayer)
                 {
 
-                    // handle shooting
-                    //    bool hasFired = activeWeapon.HandleShootInputs (
-                    //        m_InputHandler.GetFireInputDown(),
-                    //        m_InputHandler.GetFireInputHeld(),
-                    //        m_InputHandler.GetFireInputReleased());
-
                     bool down = m_InputHandler.GetFireInputDown();
                     bool held = m_InputHandler.GetFireInputHeld();
                     bool released = m_InputHandler.GetFireInputReleased();
                     
                     if (down || held || released)
                         CmdFireOnServer(down,held,released);
-                }    
-                //    // Handle accumulating recoil
-                //    if (hasFired)
-                //    {
-                //        m_AccumulatedRecoil += Vector3.back * activeWeapon.RecoilForce;
-                //        m_AccumulatedRecoil = Vector3.ClampMagnitude(m_AccumulatedRecoil, MaxRecoilDistance);
-                //    }
-                //}
+                }
             }
 
             // weapon switch handling
@@ -208,17 +198,6 @@ namespace Unity.FPS.Gameplay
         public void CmdFireOnServer(bool firedown, bool fireheld, bool firereleased)
         {
             RpcFireOnClient(firedown, fireheld, firereleased);
-
-            //bool hasFired = activeWeapon.HandleShootInputs(
-            //    firedown,
-            //    fireheld,
-            //    firereleased);
-            //
-            //if (hasFired)
-            //{
-            //    m_AccumulatedRecoil += Vector3.back * activeWeapon.RecoilForce;
-            //    m_AccumulatedRecoil = Vector3.ClampMagnitude(m_AccumulatedRecoil, MaxRecoilDistance);
-            //}
         }
 
         [ClientRpc]
