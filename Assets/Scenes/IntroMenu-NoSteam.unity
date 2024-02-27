@@ -655,7 +655,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2120825784}
+      objectReference: {fileID: 0}
     - target: {fileID: 6047226361763393285, guid: 5ff23ba3fbb0e014f8d5c1ca0f763357,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -1851,6 +1851,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4799413963961755695, guid: 503dd0ffcdd11704196d651f16ef94ce, type: 3}
+    - {fileID: 4799413963961755689, guid: 503dd0ffcdd11704196d651f16ef94ce, type: 3}
+    - {fileID: 4799413963961755690, guid: 503dd0ffcdd11704196d651f16ef94ce, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 503dd0ffcdd11704196d651f16ef94ce, type: 3}
 --- !u!1 &2120825782 stripped
 GameObject:
@@ -1858,34 +1860,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2120825781}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2120825783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2120825782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6e55fca1f4e4844593a3dd65a3ecb39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Channels: 0200000001000000
-  Timeout: 50
-  AllowSteamRelay: 1
-  UseNextGenSteamNetworking: 1
---- !u!114 &2120825784 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4799413963961755689, guid: 503dd0ffcdd11704196d651f16ef94ce,
-    type: 3}
-  m_PrefabInstance: {fileID: 2120825781}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2120825782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e49de7c09a08a5746a4255db9da55ce3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2120825788
 MonoBehaviour:
   m_ObjectHideFlags: 0
