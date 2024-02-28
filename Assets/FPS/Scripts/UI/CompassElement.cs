@@ -13,7 +13,8 @@ namespace Unity.FPS.UI
 
         Compass m_Compass;
 
-        void Awake()
+        //void Awake()
+        void Start()
         {
             m_Compass = FindObjectOfType<Compass>();
             DebugUtility.HandleErrorIfNullFindObject<Compass, CompassElement>(m_Compass, this);

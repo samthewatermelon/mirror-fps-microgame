@@ -96,6 +96,15 @@ namespace Unity.FPS.Gameplay
         WeaponSwitchState m_WeaponSwitchState;
         int m_WeaponSwitchNewWeaponIndex;
 
+        //private string downHeldReleased;
+
+        [SyncVar]
+        public bool triggerDown;
+        [SyncVar]
+        public bool triggerHeld;
+        [SyncVar]
+        public bool triggerReleased;
+
         void Start()
         {
             if (!NetworkClient.ready)
@@ -151,10 +160,19 @@ namespace Unity.FPS.Gameplay
                     bool down = m_InputHandler.GetFireInputDown();
                     bool held = m_InputHandler.GetFireInputHeld();
                     bool released = m_InputHandler.GetFireInputReleased();
+
+                    if (down != triggerDown)
+                        CmdUpdateSyncVar("triggerDown", down);
+                    if (held != triggerHeld)
+                        CmdUpdateSyncVar("triggerHeld", held);
+                    if (released != triggerReleased)
+                        CmdUpdateSyncVar("triggerReleased", released);
                     
-                    if (down || held || released)
-                        CmdFireOnServer(down,held,released);
+                    //if (down || held || released)
+                    //    CmdFireOnServer(down,held,released);
                 }
+
+                Fire(triggerDown, triggerHeld, triggerReleased);
             }
 
             // weapon switch handling
@@ -195,6 +213,23 @@ namespace Unity.FPS.Gameplay
         }
 
         [Command]
+        public void CmdUpdateSyncVar(string var, bool val)
+        {
+            switch (var)
+            {
+                case "triggerDown":
+                    triggerDown = val;
+                    break;
+                case "triggerHeld":
+                    triggerHeld = val;
+                    break;
+                case "triggerReleased":
+                    triggerReleased = val;
+                    break;
+            }
+        }
+
+        [Command]
         public void CmdFireOnServer(bool firedown, bool fireheld, bool firereleased)
         {
             RpcFireOnClient(firedown, fireheld, firereleased);
@@ -210,6 +245,22 @@ namespace Unity.FPS.Gameplay
                 fireheld,
                 firereleased);
             
+            if (hasFired)
+            {
+                m_AccumulatedRecoil += Vector3.back * activeWeapon.RecoilForce;
+                m_AccumulatedRecoil = Vector3.ClampMagnitude(m_AccumulatedRecoil, MaxRecoilDistance);
+            }
+        }
+
+        public void Fire(bool firedown, bool fireheld, bool firereleased)
+        {
+            //Debug.Log(firedown + "," + fireheld + "," + firereleased);
+
+            bool hasFired = activeWeapon.HandleShootInputs(
+                firedown,
+                fireheld,
+                firereleased);
+
             if (hasFired)
             {
                 m_AccumulatedRecoil += Vector3.back * activeWeapon.RecoilForce;

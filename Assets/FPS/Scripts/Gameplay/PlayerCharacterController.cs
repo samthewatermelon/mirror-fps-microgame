@@ -1,11 +1,12 @@
 ﻿using Unity.FPS.Game;
 using UnityEngine;
 using UnityEngine.Events;
+using Mirror;
 
 namespace Unity.FPS.Gameplay
 {
     [RequireComponent(typeof(CharacterController), typeof(PlayerInputHandler), typeof(AudioSource))]
-    public class PlayerCharacterController : MonoBehaviour
+    public class PlayerCharacterController : NetworkBehaviour
     {
         [Header("References")] [Tooltip("Reference to the main camera used for the player")]
         public Camera PlayerCamera;
@@ -143,6 +144,9 @@ namespace Unity.FPS.Gameplay
 
         void Start()
         {
+            if (!isLocalPlayer)
+                this.enabled = false;
+
             youDied.SetActive(false);
 
             // fetch components on the same gameObject

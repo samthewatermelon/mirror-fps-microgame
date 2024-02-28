@@ -451,7 +451,6 @@ namespace Unity.FPS.Game
                 Vector3 shotDirection = GetShotDirectionWithinSpread(WeaponMuzzle);
                 ProjectileBase newProjectile = Instantiate(ProjectilePrefab, WeaponMuzzle.position,
                     Quaternion.LookRotation(shotDirection));
-                //NetworkServer.Spawn(newProjectile.gameObject);
                 newProjectile.Shoot(this);
             }
 

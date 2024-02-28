@@ -645,6 +645,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e9b849ae2755b428b23edfa9686c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   PlayerCamera: {fileID: 3040968515082788213}
   AudioSource: {fileID: 5233540053188750589}
   GravityDownForce: 20
@@ -733,6 +736,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   activeWeapon: {fileID: 0}
+  triggerDown: 0
+  triggerHeld: 0
+  triggerReleased: 0
 --- !u!114 &6041151343614772010
 MonoBehaviour:
   m_ObjectHideFlags: 0
