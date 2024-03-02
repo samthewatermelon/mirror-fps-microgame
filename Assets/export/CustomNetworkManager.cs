@@ -10,7 +10,7 @@ public class CustomNetworkManager : NetworkManager
 {
     public static CustomNetworkManager singleton { get; internal set; }
 
-    public List<PlayerObjectController> GamePlayers;
+    //public List<PlayerObjectController> GamePlayers;
 
     public override void Start()
     {
@@ -22,12 +22,12 @@ public class CustomNetworkManager : NetworkManager
     {
         base.OnServerAddPlayer(conn);
         
-        if (SceneManager.GetActiveScene().name == "Lobby") 
-        {
-            PlayerObjectController GamePlayerInstance = conn.identity.gameObject.GetComponent<PlayerObjectController>();
-            GamePlayerInstance.ConnectionID = conn.connectionId;
-            GamePlayerInstance.PlayerIdNumber = GamePlayers.Count + 1;
-            GamePlayerInstance.PlayerSteamID = (ulong)SteamMatchmaking.GetLobbyMemberByIndex((CSteamID)SteamLobby.Instance.CurrentLobbyID, GamePlayers.Count);
-        }
+        //if (SceneManager.GetActiveScene().name == "Lobby") 
+        //{
+        //    PlayerObjectController GamePlayerInstance = conn.identity.gameObject.GetComponent<PlayerObjectController>();
+        //    GamePlayerInstance.ConnectionID = conn.connectionId;
+        //    GamePlayerInstance.PlayerIdNumber = GamePlayers.Count + 1;
+        //    GamePlayerInstance.PlayerSteamID = (ulong)SteamMatchmaking.GetLobbyMemberByIndex((CSteamID)SteamLobby.Instance.CurrentLobbyID, GamePlayers.Count);
+        //}
     }
 }
